@@ -15,8 +15,10 @@ const ProfileCard = ({ profile , feavorite , button }) => (
       bgcolor: '#fff',
       borderRadius: 2,
       p: 2,
+      
 
-      minWidth: '32vw',
+
+      Width: '  100px',
       height: '20vh',
       boxShadow: 2,
       alignItems: 'center',

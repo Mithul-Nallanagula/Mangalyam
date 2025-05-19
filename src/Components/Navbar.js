@@ -4,7 +4,7 @@ import {
     Toolbar,
     Button,
     Box,
-    CssBaseline,
+    
     IconButton,
     Drawer,
     List,
@@ -42,7 +42,7 @@ export default function NavBarOnly() {
 
     return (
         <>
-            <CssBaseline />
+            
             <FixedAppBar>
                 <Toolbar sx={{ justifyContent: 'space-between' }}>
                     {isMobile ? (
@@ -111,7 +111,7 @@ export default function NavBarOnly() {
                     ) : (
                         <>
                             {/* Logo on the left */}
-                            <Box sx={{ flexGrow: 1 }}>
+                            <Box >
                                 <Box
                                     component="img"
                                     src={MangalyamLogo}

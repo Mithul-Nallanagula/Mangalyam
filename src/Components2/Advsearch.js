@@ -64,7 +64,7 @@ const subCasteOptions = selectedCaste?.subcaste || [];
   return (
     <Box
       sx={{
-        p: { xs: 0, md: 2 },
+        p: { xs: 0, md: 1 },
         borderRadius: 2,
         width: { xs: '100%', md: '230px' },
         flexShrink: 0,

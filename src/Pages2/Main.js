@@ -77,7 +77,7 @@ function Main() {
                                     key={index}
                                     sx={{
                                         flex: 1,
-                                        maxWidth: { xs: '20%', sm: '150px', md: '150px' },
+                                        maxWidth: { xs: '20%', sm: '150px', md: '25%' },
                                         display: 'flex',
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
@@ -110,8 +110,9 @@ function Main() {
                                 bgcolor: '#004225',
                                 borderRadius: 2,
                                 p: 2,
+                                ml:1,
                                 mt: 2,
-                                width: { xs: '90%', md: '43vw' },
+                                width: { xs: '90%', md: '41.6vw' },
                             }}
                         >
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent:{xs:'column' , md:'row                 '}, gap: 2 }}>

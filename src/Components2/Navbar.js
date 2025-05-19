@@ -14,40 +14,58 @@ import {
   BottomNavigation,
   BottomNavigationAction,
 } from '@mui/material';
+
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
+import ChatIcon from '@mui/icons-material/Chat';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-import ChatIcon from '@mui/icons-material/Chat';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { useNavigate } from 'react-router-dom';
 import mangalyamLogo from '../images/Mangalyam_text.png';
 import user from '../images/usernav.png';
 
 export default function Header() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [bottomNavValue, setBottomNavValue] = React.useState('home');
-
-  const navItems = ['Home', 'Matches', 'Chat', 'Notification'];
+  const location = useLocation();
   const navigate = useNavigate();
 
-  // Handle navigation on bottom nav change
+  // Navigation items for desktop
+  const navItems = [
+    { label: 'Home', path: '/main' },
+    { label: 'Matches', path: '/Match-page' },
+    { label: 'Chat', path: '/chat' },
+    { label: 'Notification', path: '/notification' },
+  ];
+
+  // Bottom navigation value from current route
+  const getCurrentBottomNav = () => {
+    if (location.pathname.includes('/main')) return 'home';
+    if (location.pathname.includes('/Match-page')) return 'matches';
+    if (location.pathname.includes('/chat')) return 'chat';
+    if (location.pathname.includes('/profile')) return 'profile';
+    return '';
+  };
+
+  const [bottomNavValue, setBottomNavValue] = React.useState(getCurrentBottomNav());
+
+  // Handle navigation from bottom nav
   const handleBottomNavChange = (event, newValue) => {
     setBottomNavValue(newValue);
     switch (newValue) {
       case 'home':
-        navigate('/');
+        navigate('/main');
         break;
       case 'matches':
-        navigate('/Match-page'); // update with your route
+        navigate('/Match-page');
         break;
       case 'chat':
-        navigate('/chat'); // example route
+        navigate('/chat');
         break;
-      case 'notification':
-        navigate('/notification'); // example route
+      case 'profile':
+        navigate('/profile');
         break;
       default:
         break;
@@ -71,16 +89,17 @@ export default function Header() {
           <Container maxWidth="lg" sx={{ display: 'flex', alignItems: 'center' }}>
             {/* Logo */}
             <Box
+              onClick={() => navigate('/main')}
               component="img"
               src={mangalyamLogo}
-              alt="Maangalyaam Logo"
-              sx={{ height: 35 }}
+              alt="Mangalyam Logo"
+              sx={{ height: 35 , cursor:'pointer' }}
             />
 
             {/* Spacer */}
             <Box sx={{ flexGrow: 1 }} />
 
-            {/* Search Bar - Hide on mobile */}
+            {/* Search Bar (hidden on mobile) */}
             {!isMobile && (
               <Box
                 sx={{
@@ -101,69 +120,83 @@ export default function Header() {
               </Box>
             )}
 
-            {/* Desktop Nav */}
-            {!isMobile ? (
+            {/* Desktop Navigation */}
+            {!isMobile && (
               <Stack direction="row" spacing={3} alignItems="center">
                 {navItems.map((item) => (
                   <Typography
-                    key={item}
-                    onClick={() => {
-                      if (item === 'Matches') {
-                        navigate('/Match-page'); // Change to your actual route
-                      }
-                      if (item === 'Home') {
-                        navigate('/');
-                      }
-                      if (item === 'Chat') {
-                        navigate('/chat');
-                      }
-                      if (item === 'Notification') {
-                        navigate('/notification');
-                      }
-                    }}
+                    key={item.label}
+                    onClick={() => navigate(item.path)}
                     sx={{
                       fontSize: 14,
-                      fontWeight: item === 'Home' ? 600 : 400,
-                      color: item === 'Home' ? '#f9a825' : '#000',
+                      fontWeight: location.pathname === item.path ? 600 : 400,
+                      color: location.pathname === item.path ? '#f9a825' : '#000',
                       cursor: 'pointer',
                     }}
                   >
-                    {item}
+                    {item.label}
                   </Typography>
                 ))}
-                <Avatar src={user} alt="User Avatar" sx={{ width: 32, height: 32 }} />
+                <Avatar src={user} alt="User Avatar" onClick={() => navigate('/profile')} sx={{cursor:'pointer', width: 32, height: 32 }} />
               </Stack>
-            ) : null}
+            )}
           </Container>
         </Toolbar>
       </AppBar>
 
-      {/* Bottom Navigation only visible on mobile */}
+      {/* Mobile Bottom Navigation */}
       {isMobile && (
-  <AppBar
-    position="fixed"
-    sx={{
-      top: 'auto',
-      width:'100%',
-      bottom: 0,
-      backgroundColor: '#fff',
-      borderTop: '1px solid #ddd',
-      zIndex: theme.zIndex.appBar,
-    }}
-  >
-    <BottomNavigation
-      value={bottomNavValue}
-      onChange={handleBottomNavChange}
-      showLabels
-    >
-      <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} />
-      <BottomNavigationAction label="Matches" value="matches" icon={<PeopleIcon />} />
-      <BottomNavigationAction label="Chat" value="chat" icon={<ChatIcon />} />
-      <BottomNavigationAction label="Pofile" value="Profile" onClick={() => navigate("/profile")} icon={<AccountCircleIcon />} />
-    </BottomNavigation>
-  </AppBar>
-)}
-
+        <AppBar
+          position="fixed"
+          sx={{
+            top: 'auto',
+            bottom: 0,
+            width: '100%',
+            backgroundColor: '#fff',
+            borderTop: '1px solid #ddd',
+            zIndex: theme.zIndex.appBar,
+          }}
+        >
+          <BottomNavigation
+            value={bottomNavValue}
+            onChange={handleBottomNavChange}
+            showLabels
+          >
+            <BottomNavigationAction
+              label="Home"
+              value="home"
+              icon={<HomeIcon />}
+              sx={{
+                color: bottomNavValue === 'home' ? '#f9a825' : undefined,
+              }}
+            />
+            <BottomNavigationAction
+              label="Matches"
+              value="matches"
+              icon={<PeopleIcon />}
+              sx={{
+                color: bottomNavValue === 'matches' ? '#f9a825' : undefined,
+              }}
+            />
+            <BottomNavigationAction
+              label="Chat"
+              value="chat"
+              icon={<ChatIcon />}
+              sx={{
+                color: bottomNavValue === 'chat' ? '#f9a825' : undefined,
+              }}
+            />
+            <BottomNavigationAction
+              label="Profile"
+              value="profile"
+              icon={<AccountCircleIcon />}
+              sx={{
+                color: bottomNavValue === 'profile' ? '#f9a825' : undefined,
+              }}
+            />
+          </BottomNavigation>
+        </AppBar>
+      )}
     </>
   );
 }
